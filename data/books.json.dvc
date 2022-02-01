@@ -1,0 +1,4 @@
+outs:
+- md5: 06f0bb8d70843f559210055480dfbde3
+  size: 1401434
+  path: books.json

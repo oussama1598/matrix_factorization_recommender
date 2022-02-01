@@ -6,7 +6,7 @@ from pyspark.pandas import DataFrame
 from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType, IntegerType, FloatType, StructField
 
-from app.schemas.ratings_schemas import BookRating
+from app.schemas.schemas import BookRating
 from app.services import spark_service
 from app.settings import settings
 
@@ -23,9 +23,8 @@ class MatrixFactorizationRecommender:
 
     def __load_dataset(self):
         schema = StructType([
-            StructField('user_id', IntegerType(), True),
             StructField('book_id', IntegerType(), True),
-            StructField('is_read', IntegerType(), True),
+            StructField('user_id', IntegerType(), True),
             StructField('rating', FloatType(), True)])
 
         self.dataset = self.spark_session.read.csv(settings.DATASET_PATH, header=True, schema=schema)

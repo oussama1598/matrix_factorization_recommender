@@ -13,6 +13,8 @@ pandas = "*"
 numpy = "*"
 jupyter = "*"
 pyarrow = "*"
+httpx = "*"
+beautifulsoup4 = "*"
 
 [dev-packages]
 
