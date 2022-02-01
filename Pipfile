@@ -12,6 +12,7 @@ pyspark = "*"
 pandas = "*"
 numpy = "*"
 jupyter = "*"
+pyarrow = "*"
 
 [dev-packages]
 
