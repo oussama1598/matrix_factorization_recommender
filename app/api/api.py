@@ -1,14 +1,15 @@
 from fastapi import APIRouter
 
-from app.api.endpoints import ratings, items
+from app.api.endpoints import knn_item, knn_user, matrix_factorization
 from app.services import books_service
 
 router = APIRouter(
     prefix='/api/v1'
 )
 
-router.include_router(ratings.router)
-router.include_router(items.router)
+router.include_router(matrix_factorization.router)
+router.include_router(knn_user.router)
+router.include_router(knn_item.router)
 
 
 @router.get('/')

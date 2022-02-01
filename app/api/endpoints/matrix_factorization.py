@@ -6,7 +6,7 @@ from app.schemas.schemas import BookRating, Book
 from app.services import recommender_service, books_service
 
 router = fastapi.APIRouter(
-    prefix='/ratings'
+    prefix='/matrix_factorization'
 )
 
 

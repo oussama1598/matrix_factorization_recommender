@@ -8,8 +8,8 @@ export default function ItemsList() {
     const [loading, setLoading] = useState(true);
     const [books, setBooks] = useState([]);
 
-    const loadBooks = async () => {
-        const books = await (await fetch(`http://127.0.0.1:9001/api/v1/items/${item}/top`)).json()
+    const loadBooks = async (i) => {
+        const books = await (await fetch(`http://127.0.0.1:9001/api/v1/knn_item/${i}/top/10`)).json()
 
         setBooks(books);
         setLoading(false);
@@ -19,11 +19,11 @@ export default function ItemsList() {
         setItem(event.target.value);
 
         setLoading(true);
-        loadBooks();
+        loadBooks(event.target.value);
     }
 
     useEffect(() => {
-        loadBooks();
+        loadBooks(item);
     }, []);
 
     return (

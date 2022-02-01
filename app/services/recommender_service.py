@@ -1,11 +1,13 @@
 from typing import List
 
-from app.modules.knn_recommender import KNNRecommender
+from app.modules.knn_item_recommender import KNNItemRecommender
+from app.modules.knn_user_recommender import KNNUserRecommender
 from app.modules.matrix_factorization_recommender import MatrixFactorizationRecommender
 
 recommenders = {
     'matrix_factorization': MatrixFactorizationRecommender(),
-    'knn': KNNRecommender()
+    'knn_item': KNNItemRecommender(),
+    'knn_user': KNNUserRecommender()
 }
 
 

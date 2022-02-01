@@ -6,14 +6,14 @@ from app.schemas.schemas import Book
 from app.services import recommender_service, books_service
 
 router = fastapi.APIRouter(
-    prefix='/items'
+    prefix='/knn_user'
 )
 
 
-@router.get('/{book_id}/top', response_model=List[Book])
-async def ratings_index(book_id: int):
+@router.get('/{book_id}/top/{top_n}', response_model=List[Book])
+async def users_index(book_id: int, top_n: int):
     books: List[Book] = []
-    books_ids: List[int] = recommender_service.get_recommender('knn').get_top_n(book_id)
+    books_ids: List[int] = recommender_service.get_recommender('knn_user').get_top_n(book_id)
 
     for book_id in books_ids:
         book_data = books_service.get_book_data(str(book_id))

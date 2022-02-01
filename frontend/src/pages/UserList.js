@@ -4,26 +4,34 @@ import {CircularProgress, FormControl, Grid, InputLabel, MenuItem, Select, Typog
 
 
 export default function UserList() {
+    const [algorithm, setAlgorithm] = useState('matrix_factorization')
     const [user, setUser] = useState(314);
     const [loading, setLoading] = useState(true);
     const [books, setBooks] = useState([]);
 
-    const loadBooks = async () => {
-        const books = await (await fetch(`http://127.0.0.1:9001/api/v1/ratings/${user}/top/10`)).json()
+    const loadBooks = async (i, a) => {
+        const books = await (await fetch(`http://127.0.0.1:9001/api/v1/${a}/${i}/top/10`)).json()
 
         setBooks(books);
         setLoading(false);
+    }
+
+    const handleChangeAlgorithm = (event) => {
+        setAlgorithm(event.target.value);
+
+        setLoading(true);
+        loadBooks(user, event.target.value);
     }
 
     const handleChange = (event) => {
         setUser(event.target.value);
 
         setLoading(true);
-        loadBooks();
+        loadBooks(event.target.value, algorithm);
     }
 
     useEffect(() => {
-        loadBooks();
+        loadBooks(user, algorithm);
     }, []);
 
     return (
@@ -36,6 +44,20 @@ export default function UserList() {
                             <Typography variant="h4">Top 10 Recommendations for User ID {user}</Typography>
                         </Grid>
                         <Grid item>
+                            <FormControl variant="standard" style={{paddingRight: '20px'}}>
+                                <InputLabel id="demo-simple-select-label">Algorithm</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={algorithm}
+                                    label="Algorithm"
+                                    onChange={handleChangeAlgorithm}
+                                    disabled={loading}
+                                >
+                                    <MenuItem value="matrix_factorization">Matrix Factorization</MenuItem>
+                                    <MenuItem value="knn_user">Knn</MenuItem>
+                                </Select>
+                            </FormControl>
                             <FormControl variant="standard">
                                 <InputLabel id="demo-simple-select-label">User</InputLabel>
                                 <Select

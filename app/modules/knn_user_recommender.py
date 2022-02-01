@@ -8,11 +8,12 @@ from sklearn.neighbors import NearestNeighbors
 from app.settings import settings
 
 
-class KNNRecommender:
+class KNNUserRecommender:
     def __init__(self):
         self.K: int = 10
 
         self.dataset: Optional[pd.DataFrame] = None
+        self.books: Optional[pd.DataFrame] = None
 
         self.user_mapper = None
         self.book_mapper = None
@@ -27,6 +28,7 @@ class KNNRecommender:
 
     def __load_dataset(self):
         self.dataset = pd.read_csv(settings.DATASET_PATH)
+        self.books = pd.read_csv(settings.BOOKS_DIR)
 
     def __create_matrix(self):
         user_ids = self.dataset['user_id']
@@ -52,16 +54,29 @@ class KNNRecommender:
         self.model = NearestNeighbors(n_neighbors=self.K, algorithm="brute", metric='cosine')
         self.model.fit(self.matrix)
 
-    def get_top_n(self, book_id: int) -> List[int]:
-        neighbour_ids = []
+    def get_top_n(self, user_id: int):
+        similar_ids = []
+        user_ind = self.user_mapper[user_id]
+        user_vec = self.matrix[user_ind]
 
-        book_ind = self.book_mapper[book_id]
-        book_vec = self.matrix[book_ind].reshape(1, -1)
-
-        neighbour = self.model.kneighbors(book_vec, return_distance=False)
+        neighbour = self.model.kneighbors(user_vec, return_distance=False)
 
         for i in range(0, self.K):
             n = neighbour.item(i)
-            neighbour_ids.append(self.book_inv_mapper[n])
+            similar_ids.append(self.user_inv_mapper[n])
 
-        return neighbour_ids
+        recommend_books = []
+        weights = []
+        for i in similar_ids:
+            for x in self.dataset.loc[self.dataset.user_id == i].book_id.values.tolist():
+                avg = self.books.loc[self.books.id == x].average_rating.values[0]
+                recommend_books.append(x)
+                weights.append(avg)
+        recommend_books = np.unique(recommend_books)
+        weights = np.unique(weights)
+        recommend_books = recommend_books.tolist()
+        weights = weights.tolist()
+        recommend_books = pd.DataFrame(list(zip(recommend_books, weights)), columns=["books", "rating"]).sort_values(
+            by="rating", ascending=False).iloc[0:11].books.values.tolist()
+
+        return recommend_books
