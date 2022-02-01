@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic.main import BaseModel
 
 
@@ -12,4 +14,4 @@ class BookData(BaseModel):
 
 
 class Book(BookData):
-    rating: float
+    rating: Optional[float] = None

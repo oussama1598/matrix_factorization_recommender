@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.api.endpoints import ratings
+from app.api.endpoints import ratings, items
 from app.services import books_service
 
 router = APIRouter(
@@ -8,6 +8,7 @@ router = APIRouter(
 )
 
 router.include_router(ratings.router)
+router.include_router(items.router)
 
 
 @router.get('/')
