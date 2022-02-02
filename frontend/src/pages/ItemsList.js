@@ -4,26 +4,34 @@ import {CircularProgress, FormControl, Grid, InputLabel, MenuItem, Select, Typog
 
 
 export default function ItemsList() {
-    const [item, setItem] = useState(314);
+    const [algorithm, setAlgorithm] = useState('knn_item')
+    const [item, setItem] = useState(10);
     const [loading, setLoading] = useState(true);
     const [books, setBooks] = useState([]);
 
-    const loadBooks = async (i) => {
-        const books = await (await fetch(`http://127.0.0.1:9001/api/v1/knn_item/${i}/top/10`)).json()
+    const loadBooks = async (i, a) => {
+        const books = await (await fetch(`http://oussama-pc.local:9001/api/v1/${a}/${i}/top/10`)).json()
 
         setBooks(books);
         setLoading(false);
+    }
+
+    const handleChangeAlgorithm = (event) => {
+        setAlgorithm(event.target.value);
+
+        setLoading(true);
+        loadBooks(item, event.target.value);
     }
 
     const handleChange = (event) => {
         setItem(event.target.value);
 
         setLoading(true);
-        loadBooks(event.target.value);
+        loadBooks(event.target.value, algorithm);
     }
 
     useEffect(() => {
-        loadBooks(item);
+        loadBooks(item, algorithm);
     }, []);
 
     return (
@@ -36,6 +44,20 @@ export default function ItemsList() {
                             <Typography variant="h4">Top 10 Recommendations for Book ID {item}</Typography>
                         </Grid>
                         <Grid item>
+                            <FormControl variant="standard" style={{paddingRight: '20px'}}>
+                                <InputLabel id="demo-simple-select-label">Algorithm</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={algorithm}
+                                    label="Algorithm"
+                                    onChange={handleChangeAlgorithm}
+                                    disabled={loading}
+                                >
+                                    <MenuItem value="knn_item">Knn Item</MenuItem>
+                                    <MenuItem value="knn_content">Knn Content</MenuItem>
+                                </Select>
+                            </FormControl>
                             <FormControl variant="standard">
                                 <InputLabel id="demo-simple-select-label">Book</InputLabel>
                                 <Select
@@ -46,9 +68,9 @@ export default function ItemsList() {
                                     onChange={handleChange}
                                     disabled={loading}
                                 >
-                                    <MenuItem value={314}>Inkheart (Inkworld, #1)</MenuItem>
-                                    <MenuItem value={20}>Mockingjay (The Hunger Games, #3)</MenuItem>
+                                    <MenuItem value={10}>Pride and Prejudice</MenuItem>
                                     <MenuItem value={30}>Gone Girl</MenuItem>
+                                    <MenuItem value={50}>Where the Sidewalk Ends</MenuItem>
                                 </Select>
                             </FormControl>
                         </Grid>

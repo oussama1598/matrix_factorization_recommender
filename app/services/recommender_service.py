@@ -1,5 +1,6 @@
 from typing import List
 
+from app.modules.knn_content_recommender import KNNContentRecommender
 from app.modules.knn_item_recommender import KNNItemRecommender
 from app.modules.knn_user_recommender import KNNUserRecommender
 from app.modules.matrix_factorization_recommender import MatrixFactorizationRecommender
@@ -7,7 +8,8 @@ from app.modules.matrix_factorization_recommender import MatrixFactorizationReco
 recommenders = {
     'matrix_factorization': MatrixFactorizationRecommender(),
     'knn_item': KNNItemRecommender(),
-    'knn_user': KNNUserRecommender()
+    'knn_user': KNNUserRecommender(),
+    'knn_content': KNNContentRecommender()
 }
 
 

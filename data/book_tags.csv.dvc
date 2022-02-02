@@ -1,0 +1,4 @@
+outs:
+- md5: 9d6e649b2ccc14341f18b418a315ea4f
+  size: 16665883
+  path: book_tags.csv

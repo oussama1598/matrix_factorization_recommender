@@ -28,7 +28,7 @@ class KNNUserRecommender:
 
     def __load_dataset(self):
         self.dataset = pd.read_csv(settings.DATASET_PATH)
-        self.books = pd.read_csv(settings.BOOKS_DIR)
+        self.books = pd.read_csv(settings.BOOKS_PATH)
 
     def __create_matrix(self):
         user_ids = self.dataset['user_id']

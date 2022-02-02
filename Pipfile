@@ -17,6 +17,7 @@ httpx = "*"
 beautifulsoup4 = "*"
 scipy = "*"
 sklearn = "*"
+nltk = "*"
 
 [dev-packages]
 

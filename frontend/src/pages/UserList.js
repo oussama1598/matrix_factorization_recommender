@@ -10,7 +10,7 @@ export default function UserList() {
     const [books, setBooks] = useState([]);
 
     const loadBooks = async (i, a) => {
-        const books = await (await fetch(`http://127.0.0.1:9001/api/v1/${a}/${i}/top/10`)).json()
+        const books = await (await fetch(`http://oussama-pc.local:9001/api/v1/${a}/${i}/top/10`)).json()
 
         setBooks(books);
         setLoading(false);
